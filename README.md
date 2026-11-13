@@ -12,7 +12,7 @@ Demo passcode for every crew member: **1969**. Log in as **Marco Varga** (the CM
 
 HALO is deployed on Vercel at **<https://halo-commitpush.vercel.app>**, from the `main` branch of this repository.
 
-- Every push or merged pull request to `main` redeploys the live site automatically. Pull requests get their own Vercel preview link, so changes can be checked before they are merged.
+- To publish changes, merge them into `main` and redeploy the Vercel project. When the Vercel project is connected to this GitHub repository (Vercel → Project → Settings → Git), every push to `main` redeploys automatically and each pull request gets its own preview link.
 - `vercel.json` sets cache headers so updates to the app, `sw.js` and `knowledge.md` show up straight away. After a deploy, reload the page once: the service worker fetches the new files and keeps them for offline use.
 - On the live site everything that needs https works: Health Buddy's knowledge base, offline caching, OCR, the camera, and Bluetooth (Chrome or Edge).
 
