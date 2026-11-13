@@ -18,10 +18,13 @@ Demo passcode for every crew member: **1969**. Log in as **Marco Varga** (the CM
 
 Serve the folder over http. Opening `index.html` by double-clicking it shows the app, but Health Buddy cannot read `knowledge.md` from a `file://` page.
 
+With Node.js/npm and Python 3 installed, start the local server from the repository root:
+
 ```
-npx serve .
-# or: python -m http.server 8000
+npm run dev
 ```
+
+Then open <http://localhost:8000>. Stop the server with `Ctrl+C`. This script uses Python's built-in HTTP server, so it does not install npm dependencies. Alternatively, run `npx serve .` or `python3 -m http.server 8000`.
 
 | Needs http(s) | Why |
 |---|---|
