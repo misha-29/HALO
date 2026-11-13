@@ -87,8 +87,23 @@ svg { display: block; }
 .panel { background: var(--color-paper-2); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); padding: var(--space-lg); color: var(--color-ink); }
 .panel > h2 { margin-bottom: var(--space-md); }
 
-/* ---------- login ---------- */
+/* ---------- launch and login ---------- */
+#splash { position: fixed; inset: 0; z-index: calc(var(--z-toast) + 1); display: grid; place-items: center; background: var(--color-paper); color: var(--color-ink); }
+.splashContent { display: flex; flex-direction: column; align-items: center; gap: var(--space-md); padding: var(--space-lg); }
+.splashLogo { gap: var(--space-lg); font-size: var(--text-4xl); }
+.splashLogo svg { width: 72px; height: 72px; opacity: 0; }
+.splashLogo > span { opacity: 0; }
+.splashSubtitle { opacity: 0; color: var(--color-muted); font-size: var(--text-sm); text-align: center; }
+#splash.splash-run .splashLogo svg { animation: splashIcon 680ms var(--ease-out) forwards; }
+#splash.splash-run .splashLogo > span { animation: splashWord 420ms var(--ease-out) 300ms forwards; }
+#splash.splash-run .splashSubtitle { animation: splashWord 360ms var(--ease-out) 480ms forwards; }
+#splash.splash-run { animation: splashExit 300ms var(--ease-out) 1100ms forwards; }
+@keyframes splashIcon { from { opacity: 0; transform: scale(.72) rotate(-12deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes splashWord { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes splashExit { to { opacity: 0; visibility: hidden; } }
 #login { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-lg); }
+#login.login-enter { animation: loginReveal 360ms var(--ease-out) both; }
+@keyframes loginReveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 .loginBox { width: min(440px, 100%); }
 .wordmark { display: inline-flex; align-items: center; gap: var(--space-sm); font-family: var(--font-display); font-weight: 500; font-size: var(--text-xl); letter-spacing: 0.06em; color: var(--color-ink); }
 .wordmark svg { width: 30px; height: 30px; }
@@ -390,6 +405,23 @@ select.pick:focus-visible { outline: 2px solid var(--color-focus); outline-offse
   .buddyFab .lbl { display: none; }
   .ringBox { width: 200px; height: 200px; }
   .game .gm { display: none; }
+}
+/* Small hover/press cues for clickable controls; hover is limited to devices that support it. */
+button:not(:disabled), [role="button"] {
+  transition-property: transform, background-color, border-color, color;
+  transition-duration: var(--dur-micro);
+  transition-timing-function: var(--ease-out);
+}
+@media (hover: hover) {
+  button:not(:disabled):hover, [role="button"]:hover { transform: translateY(-1px); }
+}
+button:not(:disabled):active, [role="button"]:active { transform: scale(0.98); }
+
+/* A brief entrance when the user successfully signs in. */
+.app-enter { animation: appEnter 320ms var(--ease-out) both; }
+@keyframes appEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }

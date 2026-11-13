@@ -515,7 +515,20 @@ function recordReading(k,v,v2,src,opt={}){
    ========================================================= */
 function renderLogin(){
   $('#logo1').innerHTML=LOGO;
+  $('#splashLogo').innerHTML=LOGO;
   $('#profiles').innerHTML=CREW.map(c=>`<button class="profile" data-act="pick" data-id="${c.id}"><span class="av">${c.id}</span><span style="flex:1"><span style="display:block;font-weight:500">${c.name}</span><span class="muted small">${c.role}</span></span>${I('arrow','sm')}</button>`).join('');
+}
+function launchSequence(){
+  const splash=$('#splash'),login=$('#login');
+  const revealLogin=()=>{splash.hidden=true;login.hidden=false;login.classList.add('login-enter')};
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){revealLogin();return}
+  const onExit=e=>{
+    if(e.target!==splash||e.animationName!=='splashExit')return;
+    splash.removeEventListener('animationend',onExit);
+    revealLogin();
+  };
+  splash.addEventListener('animationend',onExit);
+  splash.classList.add('splash-run');
 }
 function showCode(){
   const c=crew();$('#step1').hidden=true;$('#step2').hidden=false;
@@ -542,6 +555,7 @@ async function checkCode(code){
   setTimeout(enter,300);
 }
 function enter(){
+  $('#app').classList.add('app-enter');
   $('#login').hidden=true;$('#app').hidden=false;$('#buddyFab').hidden=false;
   S.tab='today';S.region=null;S.view=DAYS-1;render();
   const red=alertsList().filter(a=>a.lvl==='r').length;
@@ -1721,7 +1735,7 @@ const pv=t=>t.dataset.v==='true'?true:t.dataset.v==='false'?false:t.dataset.v;
 const ACT={
  pick:t=>{S.crew=t.dataset.id;showCode()},
  back:()=>{$('#step1').hidden=false;$('#step2').hidden=true},
- logout:async()=>{closeAll();stopReplay();S.view=DAYS-1;await wipeSession();$('#app').hidden=true;$('#buddyFab').hidden=true;$('#login').hidden=false;ACT.back();S.crew=null},
+ logout:async()=>{closeAll();stopReplay();S.view=DAYS-1;await wipeSession();$('#app').classList.remove('app-enter');$('#app').hidden=true;$('#buddyFab').hidden=true;$('#login').hidden=false;ACT.back();S.crew=null},
  tab:t=>{S.tab=t.dataset.v;render();scrollTo({top:0})},
  region:t=>{S.region=t.dataset.v;render();const b=$(`.regions [data-v="${S.region}"]`);b&&b.focus({preventScroll:true})},
  goRegion:t=>{S.region=t.dataset.v;S.tab='body';render();scrollTo({top:0})},
@@ -1846,6 +1860,7 @@ document.addEventListener('submit',e=>{
 
 /* ---------- start ---------- */
 renderLogin();
+launchSequence();
 const STORE_READY=initStore();
 const _unlock=unlock;unlock=async c=>{await STORE_READY;return _unlock(c)};
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
