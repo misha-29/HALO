@@ -2,21 +2,29 @@
 
 NASA Space Apps Challenge 2026: *Create Health Monitoring Software for Astronauts on Space Missions*.
 
+**Live site: <https://halo-commitpush.vercel.app>**
+
 HALO is a static website: plain HTML, CSS and JavaScript with no build step and no server code. It works on laptops and tablets (and phones), and keeps working offline after the first visit.
 
 Demo passcode for every crew member: **1969**. Log in as **Marco Varga** (the CMO) to see the Crew tab.
 
-## Deploy on Vercel
+## Deployment
 
-1. In Vercel, choose **Add New → Project** and import this GitHub repository.
+HALO is deployed on Vercel at **<https://halo-commitpush.vercel.app>**, from the `main` branch of this repository.
+
+- Every push or merged pull request to `main` redeploys the live site automatically. Pull requests get their own Vercel preview link, so changes can be checked before they are merged.
+- `vercel.json` sets cache headers so updates to the app, `sw.js` and `knowledge.md` show up straight away. After a deploy, reload the page once: the service worker fetches the new files and keeps them for offline use.
+- On the live site everything that needs https works: Health Buddy's knowledge base, offline caching, OCR, the camera, and Bluetooth (Chrome or Edge).
+
+To deploy your own copy:
+
+1. In Vercel, choose **Add New → Project** and import the GitHub repository.
 2. Framework preset: **Other**. Leave the build command and output directory empty (the site is served from the repository root).
-3. Deploy. Every push to `main` redeploys automatically.
-
-`vercel.json` sets cache headers so updates to the app, `sw.js` and `knowledge.md` show up straight away.
+3. Deploy.
 
 ## Run it locally
 
-Serve the folder over http. Opening `index.html` by double-clicking it shows the app, but Health Buddy cannot read `knowledge.md` from a `file://` page.
+To try HALO without installing anything, use the [live site](https://halo-commitpush.vercel.app). To work on the code, serve the folder over http. Opening `index.html` by double-clicking it shows the app, but Health Buddy cannot read `knowledge.md` from a `file://` page.
 
 With Node.js/npm and Python 3 installed, start the local server from the repository root:
 
@@ -44,7 +52,8 @@ Then open <http://localhost:8000>. Stop the server with `Ctrl+C`. This script us
 | `js/app.js` | The app: records, alerts, charts, games, Health Buddy |
 | `knowledge.md` | Health Buddy's knowledge base (NASA spaceflight hazards and risks) |
 | `sw.js` | Service worker for offline use |
-| `vercel.json` | Vercel headers |
+| `vercel.json` | Vercel headers for the live deployment |
+| `package.json` | `npm run dev` script for a local server (no dependencies) |
 | `vendor/tesseract/` | Offline OCR engine and English data |
 
 ## Health Buddy and knowledge.md
